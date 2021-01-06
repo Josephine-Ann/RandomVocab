@@ -1,19 +1,35 @@
-import React from 'react';
-import { useTheme, useThemeUpdate } from './ThemeContext'
+import React, { useContext } from 'react'
+// import { PatientCardList } from '../PatientCardList/PatientCardList';
+// import { Header } from '../Header/Header';
+import { VocabContext } from './components/FunctionContextComponent/VocabProvider'
 
-export default function FunctionContextComponent() {
-    const darkTheme = useTheme()
-    const toggleTheme = useThemeUpdate()
-    const themeStyles = {
-        backgroundColor: darkTheme ? '#333' : '#CCC',
-        color: darkTheme ? '#CCC' : '#333',
-        padding: '2rem',
-        margin: '2rem'
-    }
+export const FunctionContextComponent = () => {
+    const {
+        state: { vocabulary },
+        addVocab,
+        setNewName,
+        setNewTranslation,
+        hidden
+    } = useContext(VocabContext);
     return (
         <div>
-            <button onClick={toggleTheme}>Toggle Theme</button>
-            <div style={themeStyles}>Function Theme</div>
+            {
+                vocabulary.length === 0 ? (
+                    <div>
+                        <p>No hi</p>
+                    </div>
+                ) : (
+                        <div>
+                            <p>Hi</p>
+                            <form>
+                                <p id="43" hidden={hidden !== 43}>Easy</p>
+                                <input onChange={(e) => { setNewName(e.target.value) }} />
+                                <input onChange={(e) => { setNewTranslation(e.target.value) }} />
+                                <button onClick={() => { addVocab() }} >Submit</button>
+                            </form>
+                        </div>
+                    )
+            }
         </div>
     )
 }
