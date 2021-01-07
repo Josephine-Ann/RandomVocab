@@ -1,4 +1,5 @@
 import firebase from 'firebase'
+import "firebase/auth"
 
 var firebaseConfig = {
     apiKey: "AIzaSyDIGRAs08LfARKMvaojN_r5IdwsKaQEHN8",
@@ -11,6 +12,20 @@ var firebaseConfig = {
     measurementId: "G-VK89912P0Z"
 };
 // Initialize Firebase
-var fire = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
+
+const database = firebase.database();
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        console.log('signed in')
+    } else {
+        console.log('signed out')
+    }
+});
+
 // firebase.analytics();
-export default fire;
+const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+
+export { googleAuthProvider, firebase, database as default };
+// export { firebase, database as default };
