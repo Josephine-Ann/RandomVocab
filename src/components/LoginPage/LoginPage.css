@@ -1,0 +1,177 @@
+
+#signed-out {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  * {
+    font-family: system-ui;
+    font-size: 1rem;
+    margin: 0;
+  }
+  
+  button {
+    border: none;
+  }
+  
+  body {
+    margin: 0px;
+  }
+
+  #signed-out-left {
+    background-image: linear-gradient(90deg, rgba(255,255,255,0.5) 1%, rgba(163,188,193,0.3575805322128851) 90%), url('other-main-image3.jpeg');
+    width: 41.7rem;
+    display: flex;
+  }
+
+  #signed-out-right {
+    background-color: rgba(198, 255, 249, 1);
+    width: 48.5rem;
+    display: flex;
+  
+  }
+
+  #transparent-bar-signed-out {
+    background-color: rgba(30, 104, 96, 0.3);
+    width: 10rem;
+    margin-left: 30rem;
+    height: 50%;
+    align-self: center;
+    z-index: 2;
+    position: absolute;
+    margin-bottom: 10rem;
+  }
+
+  #sign-in-box {
+    background-color: white;
+    width: 40rem;
+    margin-left: 40rem;
+    height: 50%;
+    align-self: center;
+    /* z-index: 1; */
+    position: absolute;
+    margin-bottom: 10rem;
+    justify-content: space-around;
+    box-shadow: 0 0 11px rgba(33,33,33,.5); 
+  }
+
+  #animation-animated {
+    background-color: rgba(30, 104, 96, 1);
+    width: 31.04rem;
+    height: 10.15rem;
+    margin-top: 8.1rem;
+    margin-left: 77.9px;
+    position: absolute;
+    clip-path: polygon(100% 0, 100% 100%, 97% 100%, 97% 9%, 0 9%, 0 0);
+    animation-name: starting;
+    animation-duration: 1s;
+  }
+
+
+
+@keyframes starting {
+    0%   {clip-path: polygon(100% 0, 100% 19%, 97% 19%, 97% 9%, 95% 9%, 95% 0);}
+    6%   {clip-path: polygon(100% 0, 100% 25%, 97% 25%, 97% 9%, 87% 9%, 87% 0);}
+    20%   {clip-path: polygon(100% 0, 100% 39%, 97% 39%, 97% 9%, 71% 9%, 71% 0);}
+    39%   {clip-path: polygon(100% 0, 100% 52%, 97% 52%, 97% 9%, 52% 9%, 52% 0);}
+    65%   {clip-path: polygon(100% 0, 100% 74%, 97% 74%, 97% 9%, 40% 9%, 40% 0);}
+    74%   {clip-path: polygon(100% 0, 100% 80%, 97% 80%, 97% 9%, 38% 9%, 38% 0);}
+    95%   {clip-path: polygon(100% 0, 100% 92%, 97% 92%, 97% 9%, 18% 9%, 18% 0);}
+    97%   {clip-path: polygon(100% 0, 100% 95%, 97% 95%, 97% 9%, 7% 9%, 7% 0);}
+    100% {clip-path: polygon(100% 0, 100% 100%, 97% 100%, 97% 9%, 0 9%, 0 0);}
+    
+  }
+
+  @keyframes starting-reverse {
+    0% {clip-path: polygon(100% 0, 100% 100%, 97% 100%, 97% 9%, 0 9%, 0 0);}
+    6%   {clip-path: polygon(100% 0, 100% 95%, 97% 95%, 97% 9%, 7% 9%, 7% 0);}
+    20%   {clip-path: polygon(100% 0, 100% 92%, 97% 92%, 97% 9%, 18% 9%, 18% 0);}
+    39%   {clip-path: polygon(100% 0, 100% 80%, 97% 80%, 97% 9%, 38% 9%, 38% 0);}
+    65%   {clip-path: polygon(100% 0, 100% 74%, 97% 74%, 97% 9%, 40% 9%, 40% 0);}
+    74%   {clip-path: polygon(100% 0, 100% 52%, 97% 52%, 97% 9%, 52% 9%, 52% 0);}
+    95%   {clip-path: polygon(100% 0, 100% 39%, 97% 39%, 97% 9%, 71% 9%, 71% 0);}
+    97%   {clip-path: polygon(100% 0, 100% 25%, 97% 25%, 97% 9%, 87% 9%, 87% 0);}
+    100%   {clip-path: polygon(100% 0, 100% 19%, 97% 19%, 97% 9%, 95% 9%, 95% 0);}  
+  }
+
+
+  #sign-in {
+    position: absolute;
+    margin-top: 11rem;
+    margin-left: 7.2rem;
+    font-size: 3rem;
+    color: #4f4e4e;
+    font-weight: 550;
+  }
+
+  #other-animation-animated {
+    position: absolute;
+    background-color: rgba(30, 104, 96, 1);
+    width: 41rem;
+    height: 10rem;
+    margin-top: 9rem;
+    margin-left: 2rem;
+    animation-name: other-starting;
+    animation-duration: 1s;
+    clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 0 45%, 0 38%, 7% 38%, 7% 0)
+  }
+
+
+#animation-not-animated {
+    background-color: rgba(30, 104, 96, 1);
+    width: 31.04rem;
+    height: 10.15rem;
+    margin-top: 8.1rem;
+    margin-left: 77.9px;
+    position: absolute;
+    clip-path: polygon(100% 0, 100% 0, 100% 0);
+    animation-name: starting-reverse;
+    animation-duration: 0.6s;
+  }
+
+  @keyframes other-starting {
+    0%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 7% 38%, 7% 0)}
+    14%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 6% 45%, 6% 38%, 7% 38%, 7% 0)}
+    28%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 5% 45%, 5% 38%, 7% 38%, 7% 0)}
+    42%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 4% 45%, 4% 38%, 7% 38%, 7% 0)}
+    56%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 3% 45%, 3% 38%, 7% 38%, 7% 0)}
+    70%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 2% 45%, 2% 38%, 7% 38%, 7% 0)}
+    84%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 1% 45%, 1% 38%, 7% 38%, 7% 0)}
+    100% {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 0 45%, 0 38%, 7% 38%, 7% 0)}
+  }
+
+  @keyframes reverse-other-starting {
+    0% {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 0 45%, 0 38%, 7% 38%, 7% 0)}
+    14%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 1% 45%, 1% 38%, 7% 38%, 7% 0)}
+    28%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 2% 45%, 2% 38%, 7% 38%, 7% 0)}
+    42%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 3% 45%, 3% 38%, 7% 38%, 7% 0)}
+    56%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 4% 45%, 4% 38%, 7% 38%, 7% 0)}
+    70%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 5% 45%, 5% 38%, 7% 38%, 7% 0)}
+    84%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 6% 45%, 6% 38%, 7% 38%, 7% 0)}
+    100%   {  clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 7% 38%, 7% 0)}
+  
+}
+
+  #sign-in-button {
+    width: 15rem;
+    height: 2rem;
+    color: white;
+    position: absolute;
+    margin-top: 24.5rem;
+    margin-left: 13rem;
+    background-color: rgba(91, 184, 174, 1);
+  }
+
+
+#other-animation-not-animated {
+    position: absolute;
+    background-color: rgba(30, 104, 96, 1);
+    width: 41rem;
+    height: 10rem;
+    margin-top: 9rem;
+    margin-left: 2rem;
+    animation-name: reverse-other-starting;
+    animation-duration: 0.6s;
+    clip-path: polygon(9% 0, 9% 92%, 82.7% 92%, 82.7% 100%, 7% 100%, 7% 45%, 7% 38%, 7% 0)  
+}

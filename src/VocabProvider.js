@@ -1,6 +1,8 @@
 import React from 'react'
-import { googleAuthProvider, firebase } from '../../fire'
-import database from '../../fire'
+import { googleAuthProvider, firebase } from './fire'
+import database from './fire'
+import "firebase/auth"
+
 
 export const VocabContext = React.createContext();
 
@@ -9,37 +11,58 @@ export class VocabProvider extends React.Component {
         super(props);
         this.state = {
             newVocabulary: [],
+            category: 'old',
+            newVocabularyRef: '',
             newName: '',
             newTranslation: '',
-            hidden: "",
+            hidden: '',
             idsToHide: [],
             hi: '',
             uid: '',
             errorCode: '',
-            errorMessage: ''
+            errorMessage: '',
+            hover: false,
+            currentlyAdding: false
         };
     }
 
+    addNew = async () => {
+        this.setState({
+            currentlyAdding: !this.state.currentlyAdding
+        })
+        console.log('currently adding ' + this.state.currentlyAdding)
+    }
+
     getVocab = async () => {
-        database.ref(`users/${this.state.uid}/newVocabulary`).once('value').then((snapshot) => {
-            const newWords = []
-            const ids = []
-            snapshot.forEach((childSnapshot) => {
-                newWords.push({
-                    id: childSnapshot.key,
-                    ...childSnapshot.val()
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.setState({
+                    uid: user.uid
                 })
-                ids.push(childSnapshot.key)
-            })
-            this.setState({
-                newVocabulary: newWords,
-                idsToHide: ids,
-                hidden: ids[0]
-            });
-        }).catch((e) => {
-            this.setState({
-                newVocabulary: e
-            });
+                database.ref(`users/${this.state.uid}/newVocabulary`).once('value').then((snapshot) => {
+                    const newWords = []
+                    const ids = []
+                    snapshot.forEach((childSnapshot) => {
+                        newWords.push({
+                            id: childSnapshot.key,
+                            ...childSnapshot.val()
+                        })
+                        ids.push(childSnapshot.key)
+                    })
+                    this.setState({
+                        newVocabulary: newWords,
+                        idsToHide: ids,
+                        hidden: ids[0],
+                    });
+                }).catch((e) => {
+                    this.setState({
+                        newVocabulary: []
+                    });
+                })
+            }
+            else {
+                console.log("state = definitely signed out")
+            }
         })
     }
 
@@ -56,6 +79,12 @@ export class VocabProvider extends React.Component {
             newVocabulary: others
         })
         database.ref(`users/${this.state.uid}/newVocabulary`).set(newOthers)
+        console.log('pass vocab back')
+        console.log(this.state.category)
+    }
+
+    setHover = async (hover) => {
+        this.setState({ hover })
     }
 
     passVocabForward = async () => {
@@ -79,9 +108,9 @@ export class VocabProvider extends React.Component {
         let oldVocab = []
         let newVocab = []
         vocab.forEach((voc) => {
-            if (voc.category === 'new') {
+            if (this.state.category === 'new') {
                 newVocab.push(voc.id)
-            } else if (voc.category === 'med') {
+            } else if (this.state.category === 'med') {
                 medVocab.push(voc.id)
             } else {
                 oldVocab.push(voc.id)
@@ -108,12 +137,22 @@ export class VocabProvider extends React.Component {
         }
     }
 
+    setCategory = async (category) => {
+        this.setState({ category })
+        console.log('happened')
+    }
+
+
     login = async () => {
         firebase.auth()
             .signInWithPopup(googleAuthProvider)
             .then((result) => {
                 var user = result.user;
-                this.setState({ uid: user.uid })
+                if (!this.state.uid) {
+                    this.setState({
+                        uid: user.uid,
+                    })
+                }
             }).catch((error) => {
                 var errorCode = error.code;
                 var errorMessage = error.message;
@@ -122,24 +161,42 @@ export class VocabProvider extends React.Component {
     }
 
     logout = async () => {
-        return firebase.auth().signOut();
+        firebase.auth().signOut();
+        this.setState({
+            newVocabulary: [],
+            newVocabularyRef: '',
+            newName: '',
+            newTranslation: '',
+            hidden: '',
+            idsToHide: [],
+            hi: '',
+            uid: '',
+            errorCode: '',
+            errorMessage: ''
+        })
     }
 
-    addVocab = async () => {
-        database.ref(`users/${this.state.uid}/newVocabulary`).push({
+    addVocab = async (event) => {
+        event.preventDefault()
+        const oldVocab = this.state.newVocabulary
+        const newVocab = {
             vocab: this.state.newName,
             translation: this.state.newTranslation,
             date: Date.now(),
             category: 'new'
+        }
+        oldVocab.push(newVocab)
+        this.setState({
+            newVocabulary: oldVocab
         })
+        database.ref(`users/${this.state.uid}/newVocabulary`).push(newVocab)
     };
 
     setNewName = async (newName) => {
         this.setState({
             newName: newName
         });
-        console.log(this.state.uid)
-
+        console.log(this.state.newVocabulary)
     }
 
     setNewTranslation = async (newTranslation) => {
@@ -164,7 +221,10 @@ export class VocabProvider extends React.Component {
                     passVocabBack: this.passVocabBack,
                     passVocabForward: this.passVocabForward,
                     login: this.login,
-                    logout: this.logout
+                    logout: this.logout,
+                    setHover: this.setHover,
+                    setCategory: this.setCategory,
+                    addNew: this.addNew
                 }}>
                 {!this.state.loading ? this.props.children : "Loading Vocab List..."}
             </VocabContext.Provider>

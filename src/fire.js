@@ -16,14 +16,6 @@ firebase.initializeApp(firebaseConfig);
 
 const database = firebase.database();
 
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        console.log('signed in')
-    } else {
-        console.log('signed out')
-    }
-});
-
 // firebase.analytics();
 const googleAuthProvider = new firebase.auth.GoogleAuthProvider();
 
