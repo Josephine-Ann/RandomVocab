@@ -12,7 +12,7 @@ export const Words = (props) => {
         passVocabForward
     } = useContext(VocabContext);
     return (
-        <div id="words" hidden={props.id !== hidden || !uid}>
+        <div id="words" hidden={props.id !== hidden}>
             <h1 className="vocab">{props.translation}</h1>
             <div id="bar"></div>
             <div id="card-buttons">

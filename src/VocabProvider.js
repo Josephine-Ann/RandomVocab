@@ -11,16 +11,20 @@ export class VocabProvider extends React.Component {
         super(props);
         this.state = {
             newVocabulary: [],
-            category: 'old',
+            category: 'new',
             newVocabularyRef: '',
             newName: '',
             newTranslation: '',
             hidden: '',
             idsToHide: [],
+            medVocab: [],
+            oldVocab: [],
+            newVocab: [],
             hi: '',
             uid: '',
             errorCode: '',
             errorMessage: '',
+            lessThanTen: false,
             hover: false,
             currentlyAdding: false
         };
@@ -30,7 +34,13 @@ export class VocabProvider extends React.Component {
         this.setState({
             currentlyAdding: !this.state.currentlyAdding
         })
-        console.log('currently adding ' + this.state.currentlyAdding)
+    }
+
+    setLessThanTen = async () => {
+        this.setState({
+            lessThanTen: false
+        })
+        console.log(this.state.lessThanTen)
     }
 
     getVocab = async () => {
@@ -42,6 +52,9 @@ export class VocabProvider extends React.Component {
                 database.ref(`users/${this.state.uid}/newVocabulary`).once('value').then((snapshot) => {
                     const newWords = []
                     const ids = []
+                    let medVocab = []
+                    let oldVocab = []
+                    let newVocab = []
                     snapshot.forEach((childSnapshot) => {
                         newWords.push({
                             id: childSnapshot.key,
@@ -49,10 +62,22 @@ export class VocabProvider extends React.Component {
                         })
                         ids.push(childSnapshot.key)
                     })
+                    newWords.forEach((word) => {
+                        if (word.category === "new") {
+                            newVocab.push(word.id)
+                        } else if (word.category === "med") {
+                            medVocab.push(word.id)
+                        } else if (word.category === "old") {
+                            oldVocab.push(word.id)
+                        }
+                    })
                     this.setState({
                         newVocabulary: newWords,
                         idsToHide: ids,
-                        hidden: ids[0],
+                        hidden: newVocab[0],
+                        newVocab: newVocab,
+                        oldVocab: oldVocab,
+                        medVocab: medVocab
                     });
                 }).catch((e) => {
                     this.setState({
@@ -79,8 +104,6 @@ export class VocabProvider extends React.Component {
             newVocabulary: others
         })
         database.ref(`users/${this.state.uid}/newVocabulary`).set(newOthers)
-        console.log('pass vocab back')
-        console.log(this.state.category)
     }
 
     setHover = async (hover) => {
@@ -102,33 +125,33 @@ export class VocabProvider extends React.Component {
         database.ref(`users/${this.state.uid}/newVocabulary`).set(newOthers)
     }
 
-    rotateVocab = async (category) => {
+    rotateVocab = async () => {
         let vocab = this.state.newVocabulary
         let medVocab = []
         let oldVocab = []
         let newVocab = []
         vocab.forEach((voc) => {
-            if (this.state.category === 'new') {
+            if (voc.category === 'new' && this.state.category === 'new') {
                 newVocab.push(voc.id)
-            } else if (this.state.category === 'med') {
+            } else if (voc.category === 'med' && this.state.category === 'med') {
                 medVocab.push(voc.id)
-            } else {
+            } else if (voc.category === 'old' && this.state.category === 'old') {
                 oldVocab.push(voc.id)
             }
         })
-        if (category === 'new') {
+        if (this.state.category === 'new' && newVocab.length > 10) {
             for (let i = 1; i < 5000; i++) {
                 setTimeout(() => {
                     this.setState({ hidden: newVocab[Math.floor(Math.random() * Math.floor(newVocab.length - 1))] })
                 }, 1000);
             }
-        } else if (category === 'med') {
+        } else if (this.state.category === 'med' && medVocab.length > 10) {
             for (let i = 1; i < 5000; i++) {
                 setTimeout(() => {
                     this.setState({ hidden: medVocab[Math.floor(Math.random() * Math.floor(medVocab.length - 1))] })
                 }, 1000);
             }
-        } else {
+        } else if (this.state.category === 'old' && oldVocab.length > 10) {
             for (let i = 1; i < 5000; i++) {
                 setTimeout(() => {
                     this.setState({ hidden: oldVocab[Math.floor(Math.random() * Math.floor(oldVocab.length - 1))] })
@@ -139,7 +162,23 @@ export class VocabProvider extends React.Component {
 
     setCategory = async (category) => {
         this.setState({ category })
-        console.log('happened')
+        if (category === 'new' && this.state.newVocab.length > 10) {
+            this.setState({
+                hidden: this.state.newVocab[0]
+            })
+        } else if (category === 'med' && this.state.medVocab.length > 10) {
+            this.setState({
+                hidden: this.state.medVocab[0]
+            })
+        } else if (category === 'old' && this.state.oldVocab.length > 10) {
+            this.setState({
+                hidden: this.state.oldVocab[0]
+            })
+        } else {
+            this.setState({
+                lessThanTen: true
+            })
+        }
     }
 
 
@@ -178,6 +217,7 @@ export class VocabProvider extends React.Component {
 
     addVocab = async (event) => {
         event.preventDefault()
+        event.target.reset()
         const oldVocab = this.state.newVocabulary
         const newVocab = {
             vocab: this.state.newName,
@@ -187,7 +227,8 @@ export class VocabProvider extends React.Component {
         }
         oldVocab.push(newVocab)
         this.setState({
-            newVocabulary: oldVocab
+            newVocabulary: oldVocab,
+            currentlyAdding: false
         })
         database.ref(`users/${this.state.uid}/newVocabulary`).push(newVocab)
     };
@@ -196,7 +237,6 @@ export class VocabProvider extends React.Component {
         this.setState({
             newName: newName
         });
-        console.log(this.state.newVocabulary)
     }
 
     setNewTranslation = async (newTranslation) => {
@@ -224,7 +264,8 @@ export class VocabProvider extends React.Component {
                     logout: this.logout,
                     setHover: this.setHover,
                     setCategory: this.setCategory,
-                    addNew: this.addNew
+                    addNew: this.addNew,
+                    setLessThanTen: this.setLessThanTen
                 }}>
                 {!this.state.loading ? this.props.children : "Loading Vocab List..."}
             </VocabContext.Provider>

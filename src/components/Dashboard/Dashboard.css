@@ -8,6 +8,38 @@
   background-color: rgba(170, 177, 178, 1);
 }
 
+#modal {
+  justify-content: space-around;
+  padding: 1rem 1rem;
+  background-color: rgba(178, 137, 140, 1);
+  color: white;
+  height: 7rem;
+  align-self: flex-end;
+  width: 10rem;
+  position: absolute;
+  margin-bottom: 10rem;
+  display: flex;
+  flex-direction: column;
+}
+
+#no-modal {
+  display: none;
+}
+
+#modal-para {
+  width: 100%;
+  align-self: center;
+}
+
+#modal-button {
+  margin-top: 1rem;
+  width: 5rem;
+  background-color: rgba(178, 137, 140, 1);
+  border: 0.1rem solid white;
+  color: white;
+  align-self: center;
+}
+
   #entire-screen {
     display: flex;
     width: 100vw;
