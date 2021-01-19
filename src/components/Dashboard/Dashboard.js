@@ -33,8 +33,8 @@ export const Dashboard = () => {
                     </div>
                     <div hidden={!currentlyAdding} onSubmit={(e) => { addVocab(e) }} id="input">
                         <form>
-                            <p>English</p><input onChange={(e) => { setNewName(e.target.value) }} />
-                            <p>Spanish</p><input onChange={(e) => { setNewTranslation(e.target.value) }} />
+                            <p>English</p><input maxlength="12" onChange={(e) => { setNewName(e.target.value) }} />
+                            <p>Spanish</p><input maxlength="12" onChange={(e) => { setNewTranslation(e.target.value) }} />
                             <button id="add-new-button">Add</button>
                         </form>
                     </div>

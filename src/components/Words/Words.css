@@ -4,12 +4,12 @@
 
 .vocab {
   margin-top: 5.8rem;
-    position: absolute;
-    margin-left: 10rem;
-    font-size: 5rem;
-    color: #4f4e4e;
-    font-weight: 550;
-  }
+  position: absolute;
+  margin-left: 7rem;
+  font-size: 5rem;
+  color: #4f4e4e;
+  font-weight: 550;
+}
 
   #bar {
     width: 30rem;
