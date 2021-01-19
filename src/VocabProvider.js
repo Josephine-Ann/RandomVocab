@@ -94,14 +94,22 @@ export class VocabProvider extends React.Component {
     passVocabBack = async () => {
         let vocab = this.state.newVocabulary.find((voc) => voc.id === this.state.hidden)
         const others = this.state.newVocabulary.filter((voc) => voc.id !== this.state.hidden)
-        vocab.category === 'new' ? vocab.category = 'med' : vocab.category = 'old'
+        let newCategory = ''
+        if (vocab.category === 'new') {
+            vocab.category = 'med'
+            newCategory = 'med'
+        } else if (vocab.category === 'med') {
+            vocab.category = 'old'
+            newCategory = 'old'
+        }
         others.push(vocab)
         const newOthers = {}
         others.map((oth) => {
             return newOthers[oth.id] = oth
         })
         this.setState({
-            newVocabulary: others
+            newVocabulary: others,
+            category: newCategory
         })
         database.ref(`users/${this.state.uid}/newVocabulary`).set(newOthers)
     }
@@ -113,14 +121,22 @@ export class VocabProvider extends React.Component {
     passVocabForward = async () => {
         let vocab = this.state.newVocabulary.find((voc) => voc.id === this.state.hidden)
         const others = this.state.newVocabulary.filter((voc) => voc.id !== this.state.hidden)
-        vocab.category === 'med' ? vocab.category = 'new' : vocab.category = 'med'
+        let newCategory = ''
+        if (vocab.category === 'med') {
+            vocab.category = 'new'
+            newCategory = 'new'
+        } else if (vocab.category === 'old') {
+            vocab.category = 'med'
+            newCategory = 'med'
+        }
         others.push(vocab)
         const newOthers = {}
         others.map((oth) => {
             return newOthers[oth.id] = oth
         })
         this.setState({
-            newVocabulary: others
+            newVocabulary: others,
+            category: newCategory
         })
         database.ref(`users/${this.state.uid}/newVocabulary`).set(newOthers)
     }
@@ -139,44 +155,48 @@ export class VocabProvider extends React.Component {
                 oldVocab.push(voc.id)
             }
         })
-        if (this.state.category === 'new' && newVocab.length > 10) {
+        if (this.state.category === 'new' && newVocab.length >= 10) {
             for (let i = 1; i < 5000; i++) {
                 setTimeout(() => {
                     this.setState({ hidden: newVocab[Math.floor(Math.random() * Math.floor(newVocab.length - 1))] })
                 }, 1000);
             }
-        } else if (this.state.category === 'med' && medVocab.length > 10) {
+        } else if (this.state.category === 'med' && medVocab.length >= 10) {
             for (let i = 1; i < 5000; i++) {
                 setTimeout(() => {
                     this.setState({ hidden: medVocab[Math.floor(Math.random() * Math.floor(medVocab.length - 1))] })
                 }, 1000);
             }
-        } else if (this.state.category === 'old' && oldVocab.length > 10) {
+        } else if (this.state.category === 'old' && oldVocab.length >= 10) {
             for (let i = 1; i < 5000; i++) {
                 setTimeout(() => {
                     this.setState({ hidden: oldVocab[Math.floor(Math.random() * Math.floor(oldVocab.length - 1))] })
                 }, 1000);
             }
+        } else {
+            console.log(this.state.category + ' category')
+            console.log(newVocab.length + ' length new vocab')
+            this.setState({
+                lessThanTen: true
+            })
         }
     }
 
     setCategory = async (category) => {
-        this.setState({ category })
-        if (category === 'new' && this.state.newVocab.length > 10) {
+        if (category === 'new') {
             this.setState({
-                hidden: this.state.newVocab[0]
+                hidden: this.state.newVocab[0],
+                category
             })
-        } else if (category === 'med' && this.state.medVocab.length > 10) {
+        } else if (category === 'med') {
             this.setState({
-                hidden: this.state.medVocab[0]
+                hidden: this.state.medVocab[0],
+                category
             })
-        } else if (category === 'old' && this.state.oldVocab.length > 10) {
+        } else if (category === 'old') {
             this.setState({
-                hidden: this.state.oldVocab[0]
-            })
-        } else {
-            this.setState({
-                lessThanTen: true
+                hidden: this.state.oldVocab[0],
+                category
             })
         }
     }
