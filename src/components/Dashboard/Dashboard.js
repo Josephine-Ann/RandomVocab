@@ -18,16 +18,12 @@ export const Dashboard = () => {
     return (
         <div id="entire-screen">
             <div id="image-grey">
-                <div className="levels">
+                <div className="levels" id="hidden-small">
                     <button className={category === 'new' ? "level-button-chosen" : "level-button"} onClick={() => { setCategory('new') }}>Hard</button>
-                </div>
-                <div className="levels">
                     <button className={category === 'med' ? "level-button-chosen" : "level-button"} onClick={() => { setCategory('med') }}>Medium</button>
-                </div>
-                <div className="levels">
                     <button className={category === 'old' ? "level-button-chosen" : "level-button"} onClick={() => { setCategory('old') }}>Easy</button>
                 </div>
-                <div id="adding-container">
+                <div id="adding-container-big">
                     <div id="button-add">
                         <button onClick={() => { addNew() }} id="cross"></button>
                     </div>
@@ -46,7 +42,26 @@ export const Dashboard = () => {
                 </div>
             </div>
             <div id="background">
-                <button id="sign-out-button" onClick={() => { logout() }}>Sign out</button>
+                <div id="adding-container-small">
+                    <div id="button-add">
+                        <button onClick={() => { addNew() }} id="cross"></button>
+                    </div>
+                    <div hidden={!currentlyAdding} onSubmit={(e) => { addVocab(e) }} id="input">
+                        <form>
+                            <p>English</p><input maxlength="12" onChange={(e) => { setNewName(e.target.value) }} />
+                            <p>Spanish</p><input maxlength="12" onChange={(e) => { setNewTranslation(e.target.value) }} />
+                            <button id="add-new-button">Add</button>
+                        </form>
+                    </div>
+                </div>
+                <div className="levels" id="hidden-big">
+                    <button className={category === 'new' ? "level-button-chosen" : "level-button"} onClick={() => { setCategory('new') }}>Hard</button>
+                    <button className={category === 'med' ? "level-button-chosen" : "level-button"} onClick={() => { setCategory('med') }}>Medium</button>
+                    <button className={category === 'old' ? "level-button-chosen" : "level-button"} onClick={() => { setCategory('old') }}>Easy</button>
+                </div>
+                <div id="sign-out-button-box">
+                    <button id="sign-out-button" onClick={() => { logout() }}>Sign out</button>
+                </div>
                 <div id="card-box">
                     <div id="card-border"></div>
                     <div id="card">
